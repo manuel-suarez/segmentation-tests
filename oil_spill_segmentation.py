@@ -243,3 +243,17 @@ def get_preprocessing(preprocessing_fn):
         A.Lambda(image=preprocessing_fn),
     ]
     return A.Compose(_transform)
+
+# Visualization
+# Lets look at augmented data we have
+dataset = Dataset(x_train_dir, y_train_dir, classes=['sea_surface', 'oil_spill', 'look_alike', 'ship', 'land'], augmentation=get_training_augmentation())
+
+image, mask = dataset[12] # get some sample
+visualize(
+    image=image,
+    sea_surface=mask[..., 0].squeeze(),
+    oil_spill=mask[..., 1].squeeze(),
+    look_alike=mask[..., 2].squeeze(),
+    ship=mask[..., 3].squeeze(),
+    land=mask[..., 4].squeeze()
+)
