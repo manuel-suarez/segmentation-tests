@@ -167,9 +167,7 @@ visualize(
     image=image,
     sea_surface=mask[..., 0].squeeze(),
     oil_spill=mask[..., 1].squeeze(),
-    look_alike=mask[..., 2].squeeze(),
-    ship=mask[..., 3].squeeze(),
-    land=mask[..., 4].squeeze()
+    background=mask[..., 2].squeeze(),
 )
 
 # Data augmentation
@@ -258,9 +256,7 @@ visualize(
     image=image,
     sea_surface=mask[..., 0].squeeze(),
     oil_spill=mask[..., 1].squeeze(),
-    look_alike=mask[..., 2].squeeze(),
-    ship=mask[..., 3].squeeze(),
-    land=mask[..., 4].squeeze()
+    background=mask[..., 2].squeeze(),
 )
 
 # Segmentation model
