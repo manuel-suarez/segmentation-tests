@@ -86,9 +86,11 @@ class Dataset:
     def __getitem__(self, i):
 
         # read data
-        image = cv2.imread(self.images_fps[i])
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        mask = cv2.imread(self.masks_fps[i], cv2.IMREAD_GRAYSCALE)
+        #image = cv2.imread(self.images_fps[i])
+        #image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = np.array(Image.open(self.images_fps[i]).resize((480, 360)))
+        #mask = cv2.imread(self.masks_fps[i], cv2.IMREAD_GRAYSCALE)
+        mask = np.array(Image.open(self.masks_fps[i]).convert('L').resize((480, 360)))
 
         # extract certain classes from mask (e.g. cars)
         masks = [(mask == v) for v in self.class_values]
