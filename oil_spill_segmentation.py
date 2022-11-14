@@ -156,7 +156,7 @@ class Dataloder(keras.utils.Sequence):
 
 # Data visualization
 # Lets look at data we have
-dataset = Dataset(x_train_dir, y_train_dir, classes=['sea_surface', 'oil_spill', 'look_alike', 'ship', 'land'])
+dataset = Dataset(x_train_dir, y_train_dir, classes=['sea_surface', 'oil_spill'])
 
 image, mask = dataset[5] # get some sample
 visualize(
@@ -247,7 +247,7 @@ def get_preprocessing(preprocessing_fn):
 
 # Visualization
 # Lets look at augmented data we have
-dataset = Dataset(x_train_dir, y_train_dir, classes=['sea_surface', 'oil_spill', 'look_alike', 'ship', 'land'], augmentation=get_training_augmentation())
+dataset = Dataset(x_train_dir, y_train_dir, classes=['sea_surface', 'oil_spill'], augmentation=get_training_augmentation())
 
 image, mask = dataset[12] # get some sample
 visualize(
@@ -268,7 +268,7 @@ import segmentation_models as sm
 
 BACKBONE = 'efficientnetb3'
 BATCH_SIZE = 8
-CLASSES = ['sea_surface', 'oil_spill', 'look_alike', 'ship', 'land']
+CLASSES = ['sea_surface', 'oil_spill']
 LR = 0.0001
 EPOCHS = 40
 
