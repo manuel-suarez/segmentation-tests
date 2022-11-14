@@ -246,3 +246,14 @@ def get_preprocessing(preprocessing_fn):
     ]
     return A.Compose(_transform)
 
+# Lets look at augmented data we have
+dataset = Dataset(x_train_dir, y_train_dir, classes=['car', 'sky'], augmentation=get_training_augmentation())
+
+# Visualization
+image, mask = dataset[12] # get some sample
+visualize(
+    image=image,
+    cars_mask=mask[..., 0].squeeze(),
+    sky_mask=mask[..., 1].squeeze(),
+    background_mask=mask[..., 2].squeeze(),
+)
