@@ -257,3 +257,41 @@ visualize(
     ship=mask[..., 3].squeeze(),
     land=mask[..., 4].squeeze()
 )
+
+# Segmentation model
+import segmentation_models as sm
+#sm.set_framework('tf.keras')
+# segmentation_models could also use `tf.keras` if you do not have Keras installed
+# or you could switch to other framework using `sm.set_framework('tf.keras')`
+
+BACKBONE = 'efficientnetb3'
+BATCH_SIZE = 8
+CLASSES = ['sea_surface', 'oil_spill', 'look_alike', 'ship', 'land']
+LR = 0.0001
+EPOCHS = 40
+
+preprocess_input = sm.get_preprocessing(BACKBONE)
+
+# define network parameters
+n_classes = 1 if len(CLASSES) == 1 else (len(CLASSES) + 1)  # case for binary and multiclass segmentation
+activation = 'sigmoid' if n_classes == 1 else 'softmax'
+
+#create model
+model = sm.Unet(BACKBONE, classes=n_classes, activation=activation)
+
+# define optomizer
+optim = keras.optimizers.Adam(LR)
+
+# Segmentation models losses can be combined together by '+' and scaled by integer or float factor
+# set class weights for dice_loss (car: 1.; pedestrian: 2.; background: 0.5;)
+dice_loss = sm.losses.DiceLoss(class_weights=np.array([1, 2, 0.5]))
+focal_loss = sm.losses.BinaryFocalLoss() if n_classes == 1 else sm.losses.CategoricalFocalLoss()
+total_loss = dice_loss + (1 * focal_loss)
+
+# actulally total_loss can be imported directly from library, above example just show you how to manipulate with losses
+# total_loss = sm.losses.binary_focal_dice_loss # or sm.losses.categorical_focal_dice_loss
+
+metrics = [sm.metrics.IOUScore(threshold=0.5), sm.metrics.FScore(threshold=0.5)]
+
+# compile keras model with defined optimozer, loss and metrics
+model.compile(optim, total_loss, metrics)
